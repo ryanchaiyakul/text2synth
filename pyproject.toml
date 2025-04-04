@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "text2synth"
+dynamic = ["version"]
+dependencies = [
+    "numpy==2.2.4",
+    "matplotlib==3.10.1",
+    "torch==2.8.0.dev20250403+cpu",
+    "torchaudio==2.6.0.dev20250403+cpu"
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]

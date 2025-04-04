@@ -1,0 +1,1 @@
+from .oscillator import SinOscillator, SawtoothOscillator, TriangleOscillator, SquareOscillator
