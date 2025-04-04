@@ -14,9 +14,7 @@ class Oscillator(torch.nn.Module, metaclass=abc.ABCMeta):
     """
     Abstract base class for differentiable oscillators.
 
-    This class provides the foundation for generating common waveform types
-    (Sinusoid, Triangle, Sawtooth, Square) with specified frequencies. 
-    Subclasses should implement the `forward` method to define the specific 
+    Subclasses should implement the `forward` method with specific 
     waveform generation logic.
     """
 
