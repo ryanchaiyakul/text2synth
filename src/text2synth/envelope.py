@@ -47,7 +47,7 @@ class AmpEnvelope(torch.nn.Module):
         decay_curve = -decay_curve ** self.n_decay * (1.0 - sustain)
 
         decay_curve = torch.clamp((x - (attack + hold)) / (decay + eps), 0.0, 1.0)
-        decay_curve = torch.exp(-decay_curve * 2.0) * (1.0 - sustain) - sustain # Exponential decay (adjust the decay factor for control)
+        decay_curve = (torch.exp(-decay_curve * 2.0) - 1) * (1.0 - sustain) # Exponential decay (adjust the decay factor for control)
 
         # release drops to 0.0 linearly
         #release_curve = (x - (1.0 - release)) * sustain
