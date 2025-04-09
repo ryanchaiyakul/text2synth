@@ -1,2 +1,2 @@
 from .oscillator import SinOscillator, SawtoothOscillator, TriangleOscillator, SquareOscillator
-from .envelope import AmpEnvelope
+from .envelope import AmpEnvelope, AmpEnvelopeNN

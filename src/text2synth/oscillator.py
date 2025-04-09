@@ -62,10 +62,14 @@ class SinOscillator(Oscillator):
                 f"Some frequencies exceed Nyquist frequency ({nyquist} Hz). "
                 "This will cause aliasing. Amplitudes are not zeroed."
             )
-
-        # Phase increment per timestep
+            
         phase_increments = 2 * torch.pi * frequencies / self.sample_rate
-        phases = torch.cumsum(phase_increments, dim=-1) % (2 * torch.pi)
+
+        # Prepend a zero for correct cumulative sum
+        initial_phase = torch.zeros_like(phase_increments[..., :1])
+        phase_increments = torch.cat([initial_phase, phase_increments], dim=-1)
+        phases = torch.cumsum(phase_increments, dim=-1)[..., :-1] % (2 * torch.pi)
+
         return torch.sin(phases)
 
 
