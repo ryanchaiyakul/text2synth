@@ -67,25 +67,23 @@ class AmpEnvelope(torch.nn.Module):
             raise ValueError(
                 "The sum of attack, hold, decay, and release cannot exceed 1.")
 
-        # attack rises to 1.0 linearly
+                # attack rises to 1.0 linearly
         attack_curve = torch.clamp(t / (attack + eps), max=1.0)
 
         # hold accounted by (x - (attack + hold))
 
         # decay drops to sustain
-        delay_coeff = torch.clamp(
-            (t - (attack + hold)) / (decay + eps), 0.0, 1.0)
-        decay_curve = (torch.exp(-delay_coeff * 2.0) - 1.0) / \
-            (self.decay_scale) * (1 - sustain)
-
-        # sustain accounted by (1.0 - release)
+        decay_curve = torch.clamp((t - (attack + hold)) / (decay + eps), 0.0, 1.0)
+        decay_curve = (torch.exp(-decay_curve * 2.0) - 1.0) / -(torch.exp(torch.tensor(-2.0)) - 1.0) * (1 - sustain)
 
         # release drops to 0.0 linearly
-        release_curve = - \
-            torch.clamp((t - (1.0 - release)), 0.0, 1.0) * \
-            sustain / (release + eps)
+        release_curve = -torch.clamp((t - (1.0 - release)) * sustain / (release), 0.0, 1.0)
 
-        return torch.clamp(attack_curve + decay_curve + release_curve, min=0.0, max=1.0)
+        # Combine the phases
+        envelope = attack_curve + decay_curve  + release_curve
+
+        # Normalize the envelope and apply to the audio
+        return torch.clamp(envelope, min=0.0, max=1.0)
 
     def forward(self, audio: torch.Tensor, params: Dict[str, torch.Tensor]) -> torch.Tensor:
         """

@@ -9,7 +9,9 @@ dependencies = [
     "numpy==2.2.4",
     "matplotlib==3.10.1",
     "torch==2.8.0.dev20250403+cpu",
-    "torchaudio==2.6.0.dev20250403+cpu"
+    "torchaudio==2.6.0.dev20250403+cpu",
+    "pedalboard==0.9.16",
+    "auraloss==0.4.0"
 ]
 
 [tool.pytest.ini_options]
